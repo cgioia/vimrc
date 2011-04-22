@@ -1,0 +1,1 @@
+What are you expecting? This is just my vimrc file and collection of plugins (organized using Pathogen, natch). You're welcome to peek, I suppose, but it probably isn't nearly as interesting for you as it is for me!
