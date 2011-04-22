@@ -21,10 +21,12 @@ endfunction
 " LoadCscopeDb {{{
 command! LoadCscope call LoadCscopeDb()
 function! LoadCscopeDb()
-   " Search up recursively for the cscope database files
-   let cscope_db=findfile("cscope.out", ".;")
-   if filereadable(cscope_db)
-      silent! execute "cscope add" cscope_db
+   if has("cscope")
+      " Search up recursively for the cscope database files
+      let cscope_db=findfile("cscope.out", ".;")
+      if filereadable(cscope_db)
+         silent! execute "cscope add" cscope_db
+      endif
    endif
 endfunction
 " }}}
@@ -117,7 +119,11 @@ endif
 syntax on
 
 " I like pretty colors! But I'm too lazy to define my own.
-colorscheme torte
+if has("gui_running")
+   colorscheme torte
+else
+   colorscheme molokai
+endif
 
 " Okay, I lied, I'll define a FEW of my own.
 highlight ColorColumn guibg=darkgray
