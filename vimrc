@@ -228,6 +228,29 @@ map <F11> :ctdiff<CR>
 if has ("autocmd")
    augroup cpp_files " {{{
       au!
+      func! Foldexpr_cpp(lnum)
+         let l1 = getline(a:lnum)
+         
+         if l1 =~ '^\s*$'
+            return '='
+         endif
+
+         let l2 = getline(a:lnum+1)
+
+         if l2 =~ '{'
+            return 'a1'
+         elseif l1 =~ '}'
+            return 's1'
+         elseif l1 =~ '/\*'
+            return 'a1'
+         elseif l1 =~ '\*/'
+            return 's1'
+         else
+            return '='
+         endif
+      endfunc
+      au FileType cpp,c setlocal foldexpr=Foldexpr_cpp(v:lnum)
+      au FileType cpp,c setlocal foldmethod=expr
       " Standards actually dictate 120 columns, but I strive for 80.
       au FileType cpp,c set colorcolumn=81
       au FileType cpp,c match OverLength /\%121v.\+/
