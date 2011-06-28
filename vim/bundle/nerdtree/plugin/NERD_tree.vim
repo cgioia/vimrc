@@ -2899,6 +2899,8 @@ function! s:createTreeWin()
     setlocal foldcolumn=0
     setlocal nobuflisted
     setlocal nospell
+    "CSG ADDED
+    setlocal nolist
     if g:NERDTreeShowLineNumbers
         setlocal nu
     else

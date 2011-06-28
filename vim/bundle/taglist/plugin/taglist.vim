@@ -1527,6 +1527,10 @@ function! s:Tlist_Window_Init()
     " window
     silent! setlocal nonumber
 
+    " CSG ADDED for my config
+    silent! setlocal norelativenumber
+    silent! setlocal nolist
+
     " Use fixed height when horizontally split window is used
     if g:Tlist_Use_Horiz_Window
         if v:version >= 602
