@@ -113,18 +113,18 @@ set foldlevelstart=0
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 
 " Expression-based folding {{{
-au BufRead,BufNewFile * let g:foldlevel = 0
+au BufRead,BufNewFile * let b:foldlevel = 0
 function! StartFold()
-   let g:foldlevel = g:foldlevel + 1
-   return ">".g:foldlevel
+   let b:foldlevel = b:foldlevel + 1
+   return ">".b:foldlevel
 endfunction
 function! EndFold()
-   let thislevel = g:foldlevel
-   let g:foldlevel = g:foldlevel - 1
+   let thislevel = b:foldlevel
+   let b:foldlevel = b:foldlevel - 1
    return "<".thislevel
 endfunction
 function! ContinueFold()
-   return g:foldlevel
+   return b:foldlevel
 endfunction
 "}}}
 
