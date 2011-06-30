@@ -47,8 +47,9 @@ set undolevels=1000
 set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)
 set tags=tags;
 set list
-set listchars=tab:»\ ,eol:¬,extends:¶,precedes:«,trail:·
-set showbreak=›
+set listchars=tab:»\ ,eol:¬,extends:#,precedes:«,trail:·
+"set showbreak=›
+set showbreak=↪
 set cursorline
 set scrolloff=4
 " }}}
@@ -58,8 +59,13 @@ if has("gui_running")
    " Somewhat centered on my screen
    winpos 200 100
 
-   " Consolas is a pretty sweet monospace font (from Microsoft, no less!)
-   set guifont=Consolas:h9
+   if has("gui_win32")
+      " Consolas is a pretty sweet monospace font (from Microsoft, no less!)
+      set guifont=Consolas:h9
+   elseif has("gui_mac")
+      " Fonts seem much smaller with MacVim, so go big here
+      set guifont=Inconsolata:h14
+   endif
 
    " Remove the toolbar, it's just wasting space
    set guioptions-=T
