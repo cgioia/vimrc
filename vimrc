@@ -48,8 +48,7 @@ set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)
 set tags=tags;
 set list
 set listchars=tab:»\ ,eol:¬,extends:#,precedes:«,trail:·
-"set showbreak=›
-set showbreak=↪
+set showbreak=›
 set cursorline
 set scrolloff=4
 " }}}
@@ -100,11 +99,11 @@ syntax on
 
 " Solarized has both light and dark configurations
 if has("gui_running")
-   "set background=light
-   set background=dark
+   set background=light
 else
    set background=dark
 endif
+let g:solarized_visibility = "low"
 colorscheme solarized
 call togglebg#map("<S-F2>")
 
@@ -252,12 +251,6 @@ nnoremap k gk
 nnoremap <C-e> 2<C-e>
 nnoremap <C-y> 2<C-y>
 
-" Swap implementations of ` and ' jump to markers
-" By default, ' jumps to the marked line, ` jumps to the marked line and
-" column, so swap them
-nnoremap ' `
-nnoremap ` '
-
 " Quickly get out of insert mode without your fingers having to leave the
 " home row
 inoremap jj <Esc>
@@ -276,7 +269,7 @@ vnoremap <S-Space> zA
 nnoremap <silent> <leader><space> :noh<CR>
 
 " Toggle Quickfix window
-" QFix/QFixToggle {{{
+nmap <silent> <leader>q :QFix<CR> "{{{
 command! -bang -nargs=? QFix call QFixToggle(<bang>0)
 function! QFixToggle(forced)
    if exists("g:qfix_win") && a:forced == 0
@@ -288,7 +281,6 @@ function! QFixToggle(forced)
    endif
 endfunction
 " }}}
-nmap <silent> <leader>q :QFix<CR>
 
 " If my usual method of jumping to a tag (<C-LeftMouse>) doesn't work...
 nmap <F5> g<C-]>
@@ -296,6 +288,17 @@ nmap <F5> g<C-]>
 " Copy to the Windows clipboard
 map <F6> "*y
 
+" Sometimes expression folding is just too damn high^H^H^H^Hslow.
+map <C-F2> :FoldMethodToggle<CR> "{{{
+command! FoldMethodToggle call ToggleFoldMethod()
+function! ToggleFoldMethod()
+   if ( &foldmethod == "syntax" )
+      setlocal foldmethod=expr
+   else
+      setlocal foldmethod=syntax
+   endif
+endfunction
+"}}}
 " }}}
 
 " FileType-specific handling {{{
