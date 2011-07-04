@@ -55,12 +55,11 @@ set scrolloff=4
 
 " gVim Settings {{{
 if has("gui_running")
-   " Somewhat centered on my screen
-   winpos 200 100
-
    if has("gui_win32")
       " Consolas is a pretty sweet monospace font (from Microsoft, no less!)
       set guifont=Consolas:h9
+      " Somewhat centered on my screen
+      winpos 200 100
    elseif has("gui_mac")
       " Fonts seem much smaller with MacVim, so go big here
       set guifont=Inconsolata:h14
