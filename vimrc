@@ -1,4 +1,4 @@
-" Hi, I'm Chad, and this is my vimrc.
+" Hi! I'm Chad, and this is my vimrc.
 
 " Preamble {{{
 " We live in the futuar, turn off forced Vi-compatibility
@@ -31,7 +31,7 @@ set ignorecase
 set smartcase
 set gdefault
 set completeopt=menuone,longest
-" }}}
+"}}}
 
 " Vim Behavior {{{
 set showcmd
@@ -51,7 +51,7 @@ set listchars=tab:»\ ,eol:¬,extends:#,precedes:«,trail:·
 set showbreak=›
 set cursorline
 set scrolloff=4
-" }}}
+"}}}
 
 " gVim Settings {{{
 if has("gui_running")
@@ -78,7 +78,7 @@ if has("gui_running")
    set numberwidth=4
    set relativenumber
 endif
-" }}}
+"}}}
 
 " Highlighting {{{
 " Syntax highlighting for fun and profit
@@ -102,13 +102,12 @@ if has("gui_running")
 else
    set background=dark
 endif
-let g:solarized_visibility = "low"
 colorscheme solarized
 call togglebg#map("<S-F2>")
 
 " Use a very noticible highlight when going over length for the FileType
 highlight link OverLength WarningMsg
-" }}}
+"}}}
 
 " Folding Settings {{{
 set foldenable
@@ -117,7 +116,8 @@ set foldlevelstart=0
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 
 " Expression-based folding {{{
-au BufRead,BufNewFile * let b:foldlevel = 0
+au BufEnter * let b:foldlevel = 0
+au BufEnter * let b:incomment = 0
 function! StartFold()
    let b:foldlevel = b:foldlevel + 1
    return ">".b:foldlevel
@@ -149,7 +149,7 @@ function! MyFoldText() "{{{
    return line . '…' . repeat(" ", fillcharcount) . foldedlinecount . ' '
 endfunction "}}}
 set foldtext=MyFoldText()
-" }}}
+"}}}
 
 " Plugin Settings {{{
 " NERDTree {{{
@@ -160,13 +160,13 @@ let NERDTreeMouseMode = 2
 let NERDTreeWinSize = 38
 
 nmap <F7> :NERDTreeToggle<CR>
-" }}}
+"}}}
 
 " Taglist {{{
 let Tlist_File_Fold_Auto_Close = 1
 
 map <C-F8> :TlistToggle<CR>
-" }}}
+"}}}
 
 " Tagbar {{{
 let g:tagbar_left = 1
@@ -174,12 +174,12 @@ let g:tagbar_width = 38
 
 map <F8> :TagbarOpenAutoClose<CR>
 map <S-F8> :TagbarToggle<CR>
-" }}}
+"}}}
 
 " Supertab {{{
 " <C-X><C-O> is awkward and uncomfortable! I'd rather use tab.
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
-" }}}
+"}}}
 
 " ClearCase {{{
 " Check-out un-reserved
@@ -192,18 +192,18 @@ map <F10> :ctci<CR>
 map <S-F10> :ctunco<CR>
 " Diff
 map <F11> :ctdiff<CR>
-" }}}
+"}}}
 
 " Ack {{{
 " Do an <strike>grep</strike> Ack search.
 nmap <leader>a :Ack<space>
-" }}}
+"}}}
 
 " YankRing {{{
 " Toggle the yankring window
 nmap <F2> :YRShow<CR>
-" }}}
-" }}}
+"}}}
+"}}}
 
 " Shortcut Mappings {{{
 " For ease of updating this file.
@@ -279,7 +279,7 @@ function! QFixToggle(forced)
       let g:qfix_win = bufnr("$")
    endif
 endfunction
-" }}}
+"}}}
 
 " If my usual method of jumping to a tag (<C-LeftMouse>) doesn't work...
 nmap <F5> g<C-]>
@@ -296,19 +296,23 @@ function! ToggleFoldMethod()
    else
       setlocal foldmethod=syntax
    endif
-endfunction
+endfunction "}}}
 "}}}
-" }}}
 
 " FileType-specific handling {{{
 if has ("autocmd")
-   augroup cpp_files " {{{
+   augroup cpp_files "{{{
       au!
       function! CPP_foldexpr(lnum) "{{{
          let l1 = getline(a:lnum)
 
          " Skip the line if it's blank
          if l1 =~ '^\s*$'
+            return ContinueFold()
+         endif
+
+         " Don't process any lines if we're in the middle of a C-style comment
+         if b:incomment && l1 !~ '\*/'
             return ContinueFold()
          endif
 
@@ -319,39 +323,40 @@ if has ("autocmd")
          if l1 =~ '{.*}'
             " Don't fold brackets that begin and end on the same line
             return ContinueFold()
-         elseif l1 =~ '[^\%(\%(//\)\|\%(/\*\)\)]\?\s*}'
-            " End a fold at un-commented closed brace
+         elseif l1 =~ '\%(\%(//\)\|\%(/\*\)\).*[{}]'
+            " Don't change fold on commented braces
+            return ContinueFold()
+         elseif l1 =~ '[^{]*}'
+            " End a fold at close brace
             return EndFold()
          elseif l1 =~ '^\s*{\s*$' && l0 =~ '[{,]\s*$'
             " Fold current line if is just an open brace and is preceded by
             " another open brace or a comma
             return StartFold()
-         elseif l1 =~ '\S\+.*{\s*\%(\%(//\)\|\%(/\*\)\)\?'
+         elseif l1 =~ '\S\+.*{'
             " Fold current line if it contains non-whitespace and ends with an
             " open brace
             return StartFold()
-         elseif l2 =~ '^\s*{\s*\%(\%(//\)\|\%(/\*\)\)\?' && l1 !~ '{'
+         elseif l2 =~ '^\s*{\s*\%(\%(//\)\|\%(/\*\)\)\?' && l2 !~ '}' && l1 !~ '{'
             " Fold current line if it doesn't have an open brace and the
             " following line does
             return StartFold()
          endif
 
-         " Fold file headers
-         if l1 =~ 'FILE_HEADER_BEGIN'
-            return StartFold()
-         elseif l1 =~ 'FILE_HEADER_END'
-            return EndFold()
-         endif
-
          " Folding C-style Comments
-         if l1 =~ '/\*.*\*/'
+         if l1 =~ "//"
+            " Don't fold C++ comments
+            return ContinueFold()
+         elseif l1 =~ '/\*.*\*/'
             " Don't fold C-style comments that begin and end on the same line
             return ContinueFold()
          elseif l1 =~ '\*/'
             " End fold
+            let b:incomment = 0
             return EndFold()
-         elseif l1 =~ '^\s*/\*'
+         elseif l1 =~ '/\*'
             " Fold current line if it begins with a C-style comment
+            let b:incomment = 1
             return StartFold()
          endif
 
@@ -362,20 +367,20 @@ if has ("autocmd")
       au FileType cpp,c setlocal foldmethod=expr
       au FileType cpp,c setlocal foldnestmax=3
       au FileType cpp,c match OverLength /\%121v.\+/
-   augroup end " }}}
-   augroup snippets " {{{
+   augroup end "}}}
+   augroup snippets "{{{
       au!
       au FileType snippet setlocal nofoldenable
       au FileType snippet setlocal noexpandtab
       au FileType snippet setlocal nosmarttab
-   augroup end " }}}
-   augroup vim_files " {{{
+   augroup end "}}}
+   augroup vim_files "{{{
       au!
       au FileType vim setlocal foldmethod=marker
-   augroup end " }}}
-   augroup perl_files " {{{
+   augroup end "}}}
+   augroup perl_files "{{{
       au!
       au FileType perl setlocal foldmethod=syntax
-   augroup end " }}}
+   augroup end "}}}
 endif
-" }}}
+"}}}
