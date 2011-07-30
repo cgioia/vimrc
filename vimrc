@@ -116,8 +116,13 @@ set foldlevelstart=0
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 
 " Expression-based folding {{{
-au BufEnter * let b:foldlevel = 0
-au BufEnter * let b:incomment = 0
+au BufRead,BufNewFile * let b:foldlevel = 0
+au InsertLeave,WinLeave * let b:foldlevel = 0
+au BufRead,BufNewFile * let b:incomment = 0
+
+au InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
+au InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
+
 function! StartFold()
    let b:foldlevel = b:foldlevel + 1
    return ">".b:foldlevel
@@ -291,10 +296,11 @@ map <F6> "*y
 map <C-F2> :FoldMethodToggle<CR> "{{{
 command! FoldMethodToggle call ToggleFoldMethod()
 function! ToggleFoldMethod()
-   if ( &foldmethod == "syntax" )
-      setlocal foldmethod=expr
+   if ( &foldmethod == "expr" )
+      setlocal foldmethod=manual
    else
-      setlocal foldmethod=syntax
+      let b:foldlevel=0
+      setlocal foldmethod=expr
    endif
 endfunction "}}}
 "}}}
@@ -311,52 +317,32 @@ if has ("autocmd")
             return ContinueFold()
          endif
 
-         " Don't process any lines if we're in the middle of a C-style comment
-         if b:incomment && l1 !~ '\*/'
-            return ContinueFold()
-         endif
-
-         let l2 = getline(a:lnum+1)
-         let l0 = getline(a:lnum-1)
-
-         " Folding Brackets
-         if l1 =~ '{.*}'
-            " Don't fold brackets that begin and end on the same line
-            return ContinueFold()
-         elseif l1 =~ '\%(\%(//\)\|\%(/\*\)\).*[{}]'
-            " Don't change fold on commented braces
-            return ContinueFold()
-         elseif l1 =~ '[^{]*}'
-            " End a fold at close brace
-            return EndFold()
-         elseif l1 =~ '^\s*{\s*$' && l0 =~ '[{,]\s*$'
-            " Fold current line if is just an open brace and is preceded by
-            " another open brace or a comma
-            return StartFold()
-         elseif l1 =~ '\S\+.*{'
-            " Fold current line if it contains non-whitespace and ends with an
-            " open brace
-            return StartFold()
-         elseif l2 =~ '^\s*{\s*\%(\%(//\)\|\%(/\*\)\)\?' && l2 !~ '}' && l1 !~ '{'
-            " Fold current line if it doesn't have an open brace and the
-            " following line does
-            return StartFold()
-         endif
-
-         " Folding C-style Comments
-         if l1 =~ "//"
-            " Don't fold C++ comments
-            return ContinueFold()
-         elseif l1 =~ '/\*.*\*/'
-            " Don't fold C-style comments that begin and end on the same line
-            return ContinueFold()
-         elseif l1 =~ '\*/'
-            " End fold
+         " Folding comments
+         if b:incomment && l1 =~ '\*/'
+            " End a fold if we're inside a C-style comment and it's finished
             let b:incomment = 0
             return EndFold()
-         elseif l1 =~ '/\*'
-            " Fold current line if it begins with a C-style comment
+         elseif b:incomment || l1 =~ '^\s*//'
+            " Nothing to see here, move along
+            return ContinueFold()
+         elseif l1 =~ '^\s*/\*[^/]*$'
+            " Fold the current line if it begins with a C-style comment and it
+            " doesn't end on the same line
             let b:incomment = 1
+            return StartFold()
+         endif
+
+         " Folding Brackets
+         if l1 =~ '^[^{]*}'
+            " End a fold at close brace that's not opened on the same line
+            return EndFold()
+         elseif l1 =~ '^[^#{]*$' && getline(a:lnum+1) =~ '^\s*{[^}]*$'
+            " Fold the current line if it's not a preprocessor command,
+            " doesn't contain an open brace, and the next line does
+            return StartFold()
+         elseif l1 =~ '{[^}]*$' && getline(a:lnum-1) =~ '\%([{,]\s*$\)\|\%(^\s*\%([#/\*].\+\)\?$\)'
+            " Fold current line if it has an open brace and the previous line
+            " ends with a comma, open brace, or is otherwise ignored
             return StartFold()
          endif
 
