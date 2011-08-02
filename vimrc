@@ -293,12 +293,22 @@ nmap <F5> g<C-]>
 map <F6> "*y
 
 " Sometimes expression folding is just too damn high^H^H^H^Hslow.
-map <C-F2> :FoldMethodToggle<CR> "{{{
+map <C-F3> :FoldMethodToggle<CR> "{{{
 command! FoldMethodToggle call ToggleFoldMethod()
 function! ToggleFoldMethod()
    if ( &foldmethod == "expr" )
       setlocal foldmethod=manual
    else
+      let b:foldlevel=0
+      setlocal foldmethod=expr
+   endif
+endfunction "}}}
+
+" Rarely, after doing undo-type things, folds need to be reset.
+map <C-F2> :FoldMethodReset<CR> "{{{
+command! FoldMethodReset call ResetFoldMethod()
+function! ResetFoldMethod()
+   if ( &foldmethod == "expr" )
       let b:foldlevel=0
       setlocal foldmethod=expr
    endif
@@ -312,21 +322,22 @@ if has ("autocmd")
       function! CPP_foldexpr(lnum) "{{{
          let l1 = getline(a:lnum)
 
-         " Skip the line if it's blank
-         if l1 =~ '^\s*$'
+         " Skip the line if it's blank, commented, or a preprocessor command
+         if l1 =~ '^\s*\%(\%(//.*\)\|\%(/\*.*\*/\s*\)\|\%(#.\+\)\)\?$'
             return ContinueFold()
          endif
 
          " Folding comments
-         if b:incomment && l1 =~ '\*/'
-            " End a fold if we're inside a C-style comment and it's finished
-            let b:incomment = 0
-            return EndFold()
-         elseif b:incomment || l1 =~ '^\s*//'
-            " Nothing to see here, move along
-            return ContinueFold()
+         if b:incomment
+            " We're inside a C-style comment, either end it or ignore it
+            if l1 =~ '\*/'
+               let b:incomment = 0
+               return EndFold()
+            else
+               return ContinueFold()
+            endif
          elseif l1 =~ '^\s*/\*[^/]*$'
-            " Fold the current line if it begins with a C-style comment and it
+            " Fold the current line if it begins with a C-style comment, and
             " doesn't end on the same line
             let b:incomment = 1
             return StartFold()
@@ -336,13 +347,13 @@ if has ("autocmd")
          if l1 =~ '^[^{]*}'
             " End a fold at close brace that's not opened on the same line
             return EndFold()
-         elseif l1 =~ '^[^#{]*$' && getline(a:lnum+1) =~ '^\s*{[^}]*$'
-            " Fold the current line if it's not a preprocessor command,
-            " doesn't contain an open brace, and the next line does
+         elseif l1 =~ '^[^{]*$' && getline(a:lnum+1) =~ '^\s*{[^}]*$'
+            " Fold the current line if it doesn't have an open brace and the
+            " next line starts with one
             return StartFold()
-         elseif l1 =~ '{[^}]*$' && getline(a:lnum-1) =~ '\%([{,]\s*$\)\|\%(^\s*\%([#/\*].\+\)\?$\)'
+         elseif l1 =~ '{[^}]*$' && getline(a:lnum-1) =~ '\%([{,;]\s*$\)\|\%(^\s*\%([#/\*].\+\)\?$\)'
             " Fold current line if it has an open brace and the previous line
-            " ends with a comma, open brace, or is otherwise ignored
+            " ends with a comma, open brace, semicolon, or is otherwise ignored
             return StartFold()
          endif
 
