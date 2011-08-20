@@ -102,6 +102,7 @@ if has("gui_running")
 else
    set background=dark
 endif
+let g:solarized_termcolors=256
 colorscheme solarized
 call togglebg#map("<S-F2>")
 
@@ -268,6 +269,9 @@ nnoremap <Space> za
 vnoremap <Space> za
 nnoremap <S-Space> zA
 vnoremap <S-Space> zA
+
+" No, seriously, write it. I mean it.
+cmap w!! w !sudo tee % >/dev/null
 
 " Un-highlight search queries
 nnoremap <silent> <leader><space> :noh<CR>
