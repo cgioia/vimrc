@@ -121,8 +121,10 @@ au BufRead,BufNewFile * let b:foldlevel = 0
 au InsertLeave,WinLeave * let b:foldlevel = 0
 au BufRead,BufNewFile * let b:incomment = 0
 
-au InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
-au InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
+" This automatic toggle between manual and expr often caused folds to get
+" reset after leaving insert mode, which caused many fits of rage.
+"au InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
+"au InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
 function! StartFold()
    let b:foldlevel = b:foldlevel + 1
