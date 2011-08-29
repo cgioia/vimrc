@@ -170,12 +170,6 @@ let NERDTreeWinSize = 38
 nmap <F7> :NERDTreeToggle<CR>
 "}}}
 
-" Taglist {{{
-let Tlist_File_Fold_Auto_Close = 1
-
-map <C-F8> :TlistToggle<CR>
-"}}}
-
 " Tagbar {{{
 let g:tagbar_left = 1
 let g:tagbar_width = 38
