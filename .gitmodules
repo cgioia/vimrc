@@ -7,3 +7,6 @@
 [submodule "vim/bundle/easymotion"]
 	path = vim/bundle/easymotion
 	url = git://github.com/Lokaltog/vim-easymotion.git
+[submodule "vim/bundle/ack"]
+	path = vim/bundle/ack
+	url = git://github.com/mileszs/ack.vim.git
