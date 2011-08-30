@@ -4,20 +4,12 @@
 " We live in the futuar, turn off forced Vi-compatibility
 set nocompatible
 
-" Since pathogen lives as its own bundle, so source it first.
+" Infect Vim with pathogen
 runtime bundle/vim-pathogen/autoload/pathogen.vim
-
-" Calling 'filetype off' when it's already off causes vim to exit with a
-" non-zero status. So I make sure it's on first.
-filetype on
-filetype off
-
-" Set-up pathogen to include all plugins under bundle directory.
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+call pathogen#infect()
 filetype plugin indent on
 
-" Use ',' as the leader, it's way easier than '\'.
+" Use ',' as the leader, since it's easier to reach than '\'
 let mapleader=","
 "}}}
 
@@ -129,7 +121,7 @@ au InsertLeave,WinLeave * let b:foldlevel = 0
 au BufRead,BufNewFile * let b:incomment = 0
 
 " This automatic toggle between manual and expr often caused folds to get
-" reset after leaving insert mode, which caused many fits of rage.
+" reset after leaving insert mode, which caused many fits of rage
 "au InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
 "au InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
@@ -205,7 +197,7 @@ map <F11> :ctdiff<CR>
 "}}}
 
 " Ack {{{
-" Do an <strike>grep</strike> Ack search.
+" Do an <strike>grep</strike> Ack search
 nmap <leader>a :Ack<space>
 "}}}
 
@@ -217,7 +209,7 @@ let g:yankring_history_dir='$HOME/.vim/.tmp'
 "}}}
 
 " Shortcut Mappings {{{
-" For ease of updating this file.
+" For ease of updating this file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
 
@@ -301,7 +293,7 @@ nmap <F5> g<C-]>
 " Copy to the Windows clipboard
 map <F6> "*y
 
-" Sometimes expression folding is just too damn high^H^H^H^Hslow.
+" Sometimes expression folding is just too damn high^H^H^H^Hslow
 map <C-F3> :FoldMethodToggle<CR> "{{{
 command! FoldMethodToggle call ToggleFoldMethod()
 function! ToggleFoldMethod()
@@ -313,7 +305,7 @@ function! ToggleFoldMethod()
    endif
 endfunction "}}}
 
-" Rarely, after doing undo-type things, folds need to be reset.
+" Rarely, after doing undo-type things, folds need to be reset
 map <C-F2> :FoldMethodReset<CR> "{{{
 command! FoldMethodReset call ResetFoldMethod()
 function! ResetFoldMethod()
@@ -389,4 +381,9 @@ if has ("autocmd")
       au FileType perl setlocal foldmethod=syntax
    augroup end "}}}
 endif
+"}}}
+
+" Postscript {{{
+" Source any machine-specific settings
+if filereadable(glob("~/.vim/user.vim")) | source ~/.vim/user.vim | endif
 "}}}
