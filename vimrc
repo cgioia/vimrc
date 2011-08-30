@@ -5,7 +5,7 @@
 set nocompatible
 
 " Set-up pathogen to include all plugins under bundle directory.
-runtime bundle/pathogen/autoload/pathogen.vim
+runtime bundle/vim-pathogen/autoload/pathogen.vim
 filetype on
 filetype off
 call pathogen#runtime_append_all_bundles()
