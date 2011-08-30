@@ -4,10 +4,15 @@
 " We live in the futuar, turn off forced Vi-compatibility
 set nocompatible
 
-" Set-up pathogen to include all plugins under bundle directory.
+" Since pathogen lives as its own bundle, so source it first.
 runtime bundle/vim-pathogen/autoload/pathogen.vim
+
+" Calling 'filetype off' when it's already off causes vim to exit with a
+" non-zero status. So I make sure it's on first.
 filetype on
 filetype off
+
+" Set-up pathogen to include all plugins under bundle directory.
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 filetype plugin indent on
