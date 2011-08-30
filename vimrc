@@ -211,6 +211,7 @@ nmap <leader>a :Ack<space>
 " YankRing {{{
 " Toggle the yankring window
 nmap <F2> :YRShow<CR>
+let g:yankring_history_dir='$HOME/.vim/.tmp'
 "}}}
 "}}}
 
