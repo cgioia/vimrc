@@ -169,6 +169,7 @@ set foldtext=MyFoldText()
 " Plugin Settings {{{
 " NERDTree {{{
 let NERDTreeShowBookmarks = 1
+let NERDTreeBookmarksFile=expand("$HOME/.vim/.tmp/NERDTreeBookmarks")
 let NERDTreeQuitOnOpen = 1
 let NERDTreeHighlightCursorline = 1
 let NERDTreeMouseMode = 2
