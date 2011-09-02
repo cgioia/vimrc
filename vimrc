@@ -230,7 +230,7 @@ if has("cscope")
    " Load/Kill the cscope database
    nmap <leader>lc :LoadCscope<CR>
    nmap <leader>kc :cscope kill 0<CR>
-   "
+
    " Shortcut to do cscope file searches
    nmap <F3> :cs find f<space>
    nmap <C-F3> :tab cs find f<space>
