@@ -36,8 +36,12 @@ set completeopt=menuone,longest
 set showcmd
 set autochdir
 set showmode
-set nobackup
 set noswapfile
+set directory=~/.vim/.tmp
+set nobackup
+set backupdir=~/.vim/.tmp
+set undofile
+set undodir=~/.vim/.tmp
 set hidden
 set laststatus=2
 set switchbuf=useopen,usetab
@@ -205,6 +209,10 @@ nmap <leader>a :Ack<space>
 " Toggle the yankring window
 nmap <F2> :YRShow<CR>
 let g:yankring_history_dir='$HOME/.vim/.tmp'
+"}}}
+
+" Gundo {{{
+nnoremap <C-F5> :GundoToggle<CR>
 "}}}
 "}}}
 
