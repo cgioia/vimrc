@@ -41,7 +41,7 @@ set directory=~/.vim/.tmp
 set nobackup
 set backupdir=~/.vim/.tmp
 set undofile
-set undodir=~/.vim/.tmp
+set undodir=~/.vim/.tmp/undo
 set hidden
 set laststatus=2
 set switchbuf=useopen,usetab
@@ -212,7 +212,7 @@ let g:yankring_history_dir='$HOME/.vim/.tmp'
 "}}}
 
 " Gundo {{{
-nnoremap <C-F5> :GundoToggle<CR>
+nnoremap <S-F5> :GundoToggle<CR>
 "}}}
 "}}}
 
