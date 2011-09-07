@@ -187,19 +187,6 @@ map <S-F8> :TagbarToggle<CR>
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 "}}}
 
-" ClearCase {{{
-" Check-out un-reserved
-map <F9> :ctcou<CR>
-" Check-out reserved
-map <S-F9> :ctco<CR>
-" Check-in
-map <F10> :ctci<CR>
-" Un-check-out
-map <S-F10> :ctunco<CR>
-" Diff
-map <F11> :ctdiff<CR>
-"}}}
-
 " Ack {{{
 " Do an <strike>grep</strike> Ack search
 nmap <leader>a :Ack<space>
