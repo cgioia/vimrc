@@ -1,6 +1,7 @@
 " Hi! I'm Chad, and this is my vimrc.
+" The latest version can be found at http://github.com/cgioia/vimrc
 
-" Preamble {{{
+" Preamble ---------------------------------------------------------------- {{{
 " We live in the futuar, turn off forced Vi-compatibility
 set nocompatible
 
@@ -8,12 +9,8 @@ set nocompatible
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
 filetype plugin indent on
-
-" Use ',' as the leader, since it's easier to reach than '\'
-let mapleader=","
-"}}}
-
-" Editing Behavior {{{
+" }}}
+" Editing Behavior -------------------------------------------------------- {{{
 set encoding=utf-8
 set tabstop=8
 set smarttab
@@ -30,9 +27,8 @@ set ignorecase
 set smartcase
 set gdefault
 set completeopt=menuone,longest
-"}}}
-
-" Vim Behavior {{{
+" }}}
+" Vim Behavior ------------------------------------------------------------ {{{
 set showcmd
 set autochdir
 set showmode
@@ -50,13 +46,14 @@ set undolevels=1000
 set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)
 set tags=tags;
 set list
-set listchars=tab:»\ ,eol:¬,extends:#,precedes:«,trail:·
-set showbreak=›
+set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
+set showbreak=↪
 set cursorline
 set scrolloff=4
-"}}}
 
-" gVim Settings {{{
+let mapleader=","
+" }}}
+" gVim Settings ----------------------------------------------------------- {{{
 if has("gui_running")
    if has("gui_win32")
       " Consolas is a pretty sweet monospace font (from Microsoft, no less!)
@@ -81,9 +78,8 @@ if has("gui_running")
    set numberwidth=4
    set relativenumber
 endif
-"}}}
-
-" Highlighting {{{
+" }}}
+" Highlighting ------------------------------------------------------------ {{{
 " Syntax highlighting for fun and profit
 syntax on
 
@@ -111,9 +107,8 @@ call togglebg#map("<S-F2>")
 
 " Use a very noticible highlight when going over length for the FileType
 highlight link OverLength WarningMsg
-"}}}
-
-" Folding Settings {{{
+" }}}
+" Folding Settings -------------------------------------------------------- {{{
 set foldenable
 set foldmethod=manual
 set foldlevelstart=0
@@ -160,9 +155,8 @@ function! MyFoldText() "{{{
    return line . '…' . repeat(" ", fillcharcount) . foldedlinecount . ' '
 endfunction "}}}
 set foldtext=MyFoldText()
-"}}}
-
-" Plugin Settings {{{
+" }}}
+" Plugin Settings --------------------------------------------------------- {{{
 " NERDTree {{{
 let NERDTreeShowBookmarks = 1
 let NERDTreeBookmarksFile=expand("$HOME/.vim/.tmp/NERDTreeBookmarks")
@@ -173,7 +167,6 @@ let NERDTreeWinSize = 38
 
 nmap <F7> :NERDTreeToggle<CR>
 "}}}
-
 " Tagbar {{{
 let g:tagbar_left = 1
 let g:tagbar_width = 38
@@ -181,29 +174,24 @@ let g:tagbar_width = 38
 map <F8> :TagbarOpenAutoClose<CR>
 map <S-F8> :TagbarToggle<CR>
 "}}}
-
 " Supertab {{{
 " <C-X><C-O> is awkward and uncomfortable! I'd rather use tab.
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 "}}}
-
 " Ack {{{
 " Do an <strike>grep</strike> Ack search
 nmap <leader>a :Ack<space>
 "}}}
-
 " YankRing {{{
 " Toggle the yankring window
 nmap <F2> :YRShow<CR>
 let g:yankring_history_dir='$HOME/.vim/.tmp'
 "}}}
-
 " Gundo {{{
 nnoremap <S-F5> :GundoToggle<CR>
 "}}}
-"}}}
-
-" Shortcut Mappings {{{
+" }}}
+" Shortcut Mappings ------------------------------------------------------- {{{
 " For ease of updating this file
 nmap <silent> <leader>ev :e $MYVIMRC<CR>
 nmap <silent> <leader>sv :so $MYVIMRC<CR>
@@ -309,9 +297,8 @@ function! ResetFoldMethod()
       setlocal foldmethod=expr
    endif
 endfunction "}}}
-"}}}
-
-" FileType-specific handling {{{
+" }}}
+" FileType-specific handling ---------------------------------------------- {{{
 if has ("autocmd")
    augroup cpp_files "{{{
       au!
@@ -376,9 +363,8 @@ if has ("autocmd")
       au FileType perl setlocal foldmethod=syntax
    augroup end "}}}
 endif
-"}}}
-
-" Postscript {{{
+" }}}
+" Postscript -------------------------------------------------------------- {{{
 " Source any machine-specific settings
 if filereadable(glob("~/.vim/user.vim")) | source ~/.vim/user.vim | endif
-"}}}
+" }}}
