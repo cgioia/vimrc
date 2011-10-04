@@ -43,6 +43,3 @@
 [submodule "vim/bundle/syntastic"]
 	path = vim/bundle/syntastic
 	url = git://github.com/scrooloose/syntastic.git
-[submodule "vim/bundle/Command-T.git"]
-	path = vim/bundle/Command-T.git
-	url = git://github.com/wincent/Command-T.git
