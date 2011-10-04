@@ -9,6 +9,10 @@ set nocompatible
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#infect()
 filetype plugin indent on
+
+" Get the first runtime path for storing/reading some stuff later
+let rtdirs = split( &runtimepath, ',' )
+let vfdir = rtdirs[0]
 " }}}
 " Editing Behavior -------------------------------------------------------- {{{
 set encoding=utf-8
@@ -29,15 +33,16 @@ set gdefault
 set completeopt=menuone,longest
 " }}}
 " Vim Behavior ------------------------------------------------------------ {{{
+let mapleader=","
 set showcmd
 set autochdir
 set showmode
 set noswapfile
-set directory=~/.vim/.tmp
+let &directory=vfdir . "/.tmp"
 set nobackup
-set backupdir=~/.vim/.tmp
+let &backupdir=vfdir . "/.tmp"
 set undofile
-set undodir=~/.vim/.tmp/undo
+let &undodir=vfdir . "/.tmp/undo"
 set hidden
 set laststatus=2
 set switchbuf=useopen,usetab
@@ -50,8 +55,7 @@ set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
 set showbreak=↪
 set cursorline
 set scrolloff=4
-
-let mapleader=","
+set autoread
 " }}}
 " gVim Settings ----------------------------------------------------------- {{{
 if has("gui_running")
@@ -102,6 +106,7 @@ else
    set background=dark
 endif
 let g:solarized_termcolors=256
+let g:solarized_visibility="low"
 colorscheme solarized
 call togglebg#map("<S-F2>")
 
@@ -159,7 +164,7 @@ set foldtext=MyFoldText()
 " Plugin Settings --------------------------------------------------------- {{{
 " NERDTree {{{
 let NERDTreeShowBookmarks = 1
-let NERDTreeBookmarksFile=expand("$HOME/.vim/.tmp/NERDTreeBookmarks")
+let NERDTreeBookmarksFile=vfdir . "/.tmp/NERDTreeBookmarks"
 let NERDTreeQuitOnOpen = 1
 let NERDTreeHighlightCursorline = 1
 let NERDTreeMouseMode = 2
@@ -185,7 +190,7 @@ nmap <leader>a :Ack<space>
 " YankRing {{{
 " Toggle the yankring window
 nmap <F2> :YRShow<CR>
-let g:yankring_history_dir='$HOME/.vim/.tmp'
+let g:yankring_history_dir=vfdir . "/.tmp"
 "}}}
 " Gundo {{{
 nnoremap <S-F5> :GundoToggle<CR>
@@ -215,18 +220,20 @@ if has("cscope")
    nmap <leader>kc :cscope kill 0<CR>
 
    " Shortcut to do cscope file searches
-   nmap <F3> :cs find f<space>
-   nmap <C-F3> :tab cs find f<space>
+   nmap <C-F3> :cs find f<space>
+   nmap <S-F3> :tab cs find f<space>
    nmap gf <C-\>f
 
    " Shortcut to do a cscope search
    nmap <F4> <C-\>s
-   nmap <S-F4> :cs find s<space>
+   nmap <C-F4> :cs find s<space>
 endif
 
 " Make regexs more Perl-like
 nnoremap / /\v
 vnoremap / /\v
+nnoremap ? ?\v
+vnoremap ? ?\v
 
 " Remap j and k to act as expected when used on long, wrapped, lines
 nnoremap j gj
@@ -273,11 +280,11 @@ endfunction
 " If my usual method of jumping to a tag (<C-LeftMouse>) doesn't work...
 nmap <F5> g<C-]>
 
-" Copy to the Windows clipboard
+" Copy to the system clipboard
 map <F6> "*y
 
 " Sometimes expression folding is just too damn high^H^H^H^Hslow
-map <C-F3> :FoldMethodToggle<CR> "{{{
+map <F3> :FoldMethodToggle<CR> "{{{
 command! FoldMethodToggle call ToggleFoldMethod()
 function! ToggleFoldMethod()
    if ( &foldmethod == "expr" )
@@ -289,14 +296,14 @@ function! ToggleFoldMethod()
 endfunction "}}}
 
 " Rarely, after doing undo-type things, folds need to be reset
-map <C-F2> :FoldMethodReset<CR> "{{{
-command! FoldMethodReset call ResetFoldMethod()
-function! ResetFoldMethod()
-   if ( &foldmethod == "expr" )
-      let b:foldlevel=0
-      setlocal foldmethod=expr
-   endif
-endfunction "}}}
+" map <S-F3> :FoldMethodReset<CR> "{{{
+" command! FoldMethodReset call ResetFoldMethod()
+" function! ResetFoldMethod()
+"    if ( &foldmethod == "expr" )
+"       let b:foldlevel=0
+"       setlocal foldmethod=expr
+"    endif
+" endfunction "}}}
 " }}}
 " FileType-specific handling ---------------------------------------------- {{{
 if has ("autocmd")
@@ -344,9 +351,10 @@ if has ("autocmd")
          return ContinueFold()
       endfunction "}}}
       au FileType cpp,c setlocal foldexpr=CPP_foldexpr(v:lnum)
-      au FileType cpp,c setlocal foldmethod=expr
+      " au FileType cpp,c setlocal foldmethod=expr
       au FileType cpp,c setlocal foldnestmax=3
       au FileType cpp,c match OverLength /\%121v.\+/
+      au FileType cpp setlocal commentstring=//\ %s
    augroup end "}}}
    augroup snippets "{{{
       au!
@@ -363,8 +371,4 @@ if has ("autocmd")
       au FileType perl setlocal foldmethod=syntax
    augroup end "}}}
 endif
-" }}}
-" Postscript -------------------------------------------------------------- {{{
-" Source any machine-specific settings
-if filereadable(glob("~/.vim/user.vim")) | source ~/.vim/user.vim | endif
 " }}}
