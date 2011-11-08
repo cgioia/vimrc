@@ -1,5 +1,5 @@
 " Hi! I'm Chad, and this is my vimrc.
-" The latest version can be found at http://github.com/cgioia/vimrc
+" The latest version can be found at https://raw.github.com/cgioia/vimrc/master/vimrc
 
 " Preamble ---------------------------------------------------------------- {{{
 " We live in the futuar, turn off forced Vi-compatibility
@@ -16,6 +16,8 @@ let vfdir = rtdirs[0]
 " }}}
 " Editing Behavior -------------------------------------------------------- {{{
 set encoding=utf-8
+set fileformat=unix
+set fileformats=unix,dos
 set tabstop=8
 set smarttab
 set softtabstop=3
@@ -48,14 +50,30 @@ set laststatus=2
 set switchbuf=useopen,usetab
 set history=1000
 set undolevels=1000
-set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)
+" Statusline {{{
+" set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)
+hi default link User1 Identifier
+hi default link User2 Statement
+hi default link User3 Error
+hi default link User4 Special
+set statusline=[%n]\ %<               " buffer number (do not truncate)
+set statusline+=%1*[%t]%*             " file name
+set statusline+=%2*%h%w%m%r%*         " flags
+set statusline+=%y                    " filetype
+set statusline+=[%{&ff}/%{strlen(&fenc)?&fenc:&enc}] " file encoding
+set statusline+=%=                    " right-align
+set statusline+=%-14(\ L%l/%L:C%c\ %) " current line and column
+set statusline+=%P                    " scroll percentage
+" set statusline+=%3*${SyntasticStatuslineFlag()}%* " Syntastic
+"}}}
 set tags=tags;
 set list
 set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
 set showbreak=↪
 set cursorline
-set scrolloff=4
+set scrolloff=3
 set autoread
+set wildignore=*.swp,.git,.svn,.DS_Store,*.jpg,*.bmp,*.png,*.gif
 " }}}
 " gVim Settings ----------------------------------------------------------- {{{
 if has("gui_running")
@@ -170,14 +188,14 @@ let NERDTreeHighlightCursorline = 1
 let NERDTreeMouseMode = 2
 let NERDTreeWinSize = 38
 
-nmap <F7> :NERDTreeToggle<CR>
+nnoremap <F7> :NERDTreeToggle<CR>
 "}}}
 " Tagbar {{{
 let g:tagbar_left = 1
 let g:tagbar_width = 38
 
-map <F8> :TagbarOpenAutoClose<CR>
-map <S-F8> :TagbarToggle<CR>
+nnoremap <F8> :TagbarOpenAutoClose<CR>
+nnoremap <S-F8> :TagbarToggle<CR>
 "}}}
 " Supertab {{{
 " <C-X><C-O> is awkward and uncomfortable! I'd rather use tab.
@@ -185,26 +203,36 @@ let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 "}}}
 " Ack {{{
 " Do an <strike>grep</strike> Ack search
-nmap <leader>a :Ack<space>
+nnoremap <leader>a :Ack<space>
 "}}}
 " YankRing {{{
 " Toggle the yankring window
-nmap <F2> :YRShow<CR>
+nnoremap <F2> :YRShow<CR>
 let g:yankring_history_dir=vfdir . "/.tmp"
 "}}}
 " Gundo {{{
 nnoremap <S-F5> :GundoToggle<CR>
 "}}}
-" }}}
+" Command-T {{{
+nmap <leader>ct :CommandT<CR>
+nnoremap <leader>cb :CommandTBuffer<CR>
+"}}}
+" Syntastic {{{
+let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
+let g:syntastic_enable_signs=1
+let g:syntastic_enable_balloons=1
+let g:syntastic_auto_jump=1
+"}}}
+"}}}
 " Shortcut Mappings ------------------------------------------------------- {{{
 " For ease of updating this file
-nmap <silent> <leader>ev :e $MYVIMRC<CR>
-nmap <silent> <leader>sv :so $MYVIMRC<CR>
+nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
+nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
 
 " No shift to enter ex-mode
 nnoremap ; :
 
-" Cscope stuffs
+" Cscope stuffs {{{
 if has("cscope")
    command! LoadCscope call LoadCscopeDb()
    function! LoadCscopeDb()
@@ -216,18 +244,17 @@ if has("cscope")
    endfunction
 
    " Load/Kill the cscope database
-   nmap <leader>lc :LoadCscope<CR>
-   nmap <leader>kc :cscope kill 0<CR>
+   nnoremap <leader>lc :LoadCscope<CR>
+   nnoremap <leader>kc :cscope kill 0<CR>
 
    " Shortcut to do cscope file searches
-   nmap <C-F3> :cs find f<space>
-   nmap <S-F3> :tab cs find f<space>
-   nmap gf <C-\>f
+   nnoremap gf <C-\>f
 
    " Shortcut to do a cscope search
-   nmap <F4> <C-\>s
-   nmap <C-F4> :cs find s<space>
-endif
+   nnoremap <F4> <C-\>s
+   nnoremap <C-F4> :cs find s<space>
+   nnoremap <S-F4> :cs find f<space>
+endif "}}}
 
 " Make regexs more Perl-like
 nnoremap / /\v
@@ -258,13 +285,13 @@ nnoremap <S-Space> zA
 vnoremap <S-Space> zA
 
 " No, seriously, write it. I mean it.
-cmap w!! w !sudo tee % >/dev/null
+cnoremap w!! w !sudo tee % >/dev/null
 
 " Un-highlight search queries
-nnoremap <silent> <leader><space> :noh<CR>
+nnoremap <silent> <leader><space> :noh<CR>:call clearmatches()<CR>
 
 " Toggle Quickfix window
-nmap <silent> <leader>q :QFix<CR> "{{{
+nnoremap <silent> <leader>q :QFix<CR> "{{{
 command! -bang -nargs=? QFix call QFixToggle(<bang>0)
 function! QFixToggle(forced)
    if exists("g:qfix_win") && a:forced == 0
@@ -274,36 +301,71 @@ function! QFixToggle(forced)
       copen 10
       let g:qfix_win = bufnr("$")
    endif
-endfunction
-"}}}
+endfunction "}}}
 
 " If my usual method of jumping to a tag (<C-LeftMouse>) doesn't work...
-nmap <F5> g<C-]>
+nnoremap <F5> g<C-]>
 
 " Copy to the system clipboard
-map <F6> "*y
+nnoremap <F6> "*y
+vnoremap <F6> "*y
 
 " Sometimes expression folding is just too damn high^H^H^H^Hslow
-map <F3> :FoldMethodToggle<CR> "{{{
+nnoremap <F3> :FoldMethodToggle<CR> "{{{
 command! FoldMethodToggle call ToggleFoldMethod()
 function! ToggleFoldMethod()
    if ( &foldmethod == "expr" )
       setlocal foldmethod=manual
+      execute "normal! zE"
    else
       let b:foldlevel=0
       setlocal foldmethod=expr
    endif
 endfunction "}}}
 
-" Rarely, after doing undo-type things, folds need to be reset
-" map <S-F3> :FoldMethodReset<CR> "{{{
-" command! FoldMethodReset call ResetFoldMethod()
-" function! ResetFoldMethod()
-"    if ( &foldmethod == "expr" )
-"       let b:foldlevel=0
-"       setlocal foldmethod=expr
-"    endif
-" endfunction "}}}
+" Open folds and pulse the cursor line when searching
+nnoremap n nzv:call PulseCursorLine()<CR>
+nnoremap N Nzv:call PulseCursorLine()<CR>
+
+function! PulseCursorLine() "{{{
+    let current_window = winnr()
+
+    windo set nocursorline
+    execute current_window . 'wincmd w'
+
+    setlocal cursorline
+
+    redir => old_hi
+        silent execute 'hi CursorLine'
+    redir END
+    let old_hi = split(old_hi, '\n')[0]
+    let old_hi = substitute(old_hi, 'xxx', '', '')
+
+    hi CursorLine guibg=#2a2a2a
+    redraw
+    sleep 5m
+
+    hi CursorLine guibg=#3a3a3a
+    redraw
+    sleep 5m
+
+    hi CursorLine guibg=#4a4a4a
+    redraw
+    sleep 5m
+
+    hi CursorLine guibg=#3a3a3a
+    redraw
+    sleep 5m
+
+    hi CursorLine guibg=#2a2a2a
+    redraw
+    sleep 5m
+
+    execute 'hi ' . old_hi
+
+    windo set cursorline
+    execute current_window . 'wincmd w'
+endfunction "}}}
 " }}}
 " FileType-specific handling ---------------------------------------------- {{{
 if has ("autocmd")
