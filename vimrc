@@ -56,7 +56,7 @@ hi default link User1 Identifier
 hi default link User2 Statement
 hi default link User3 Error
 hi default link User4 Special
-set statusline=[%n]\ %<               " buffer number (do not truncate)
+set statusline=[%2n]%<               " buffer number (do not truncate)
 set statusline+=%1*[%t]%*             " file name
 set statusline+=%2*%h%w%m%r%*         " flags
 set statusline+=%y                    " filetype
@@ -64,7 +64,7 @@ set statusline+=[%{&ff}/%{strlen(&fenc)?&fenc:&enc}] " file encoding
 set statusline+=%=                    " right-align
 set statusline+=%-14(\ L%l/%L:C%c\ %) " current line and column
 set statusline+=%P                    " scroll percentage
-" set statusline+=%3*${SyntasticStatuslineFlag()}%* " Syntastic
+" set statusline+=\ %3*${SyntasticStatuslineFlag()}%* " Syntastic
 "}}}
 set tags=tags;
 set list
@@ -118,15 +118,15 @@ syntax on
 "colorscheme zenburn
 
 " Solarized has both light and dark configurations
-if has("gui_running")
-   set background=light
-else
-   set background=dark
-endif
-let g:solarized_termcolors=256
-let g:solarized_visibility="low"
+" if has("gui_running")
+"    set background=light
+" else
+"    set background=dark
+" endif
+" let g:solarized_termcolors=256
+" let g:solarized_visibility="low"
 colorscheme solarized
-call togglebg#map("<S-F2>")
+call togglebg#map("<F1>")
 
 " Use a very noticible highlight when going over length for the FileType
 highlight link OverLength WarningMsg
@@ -229,9 +229,6 @@ let g:syntastic_auto_jump=1
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
 
-" No shift to enter ex-mode
-nnoremap ; :
-
 " Cscope stuffs {{{
 if has("cscope")
    command! LoadCscope call LoadCscopeDb()
@@ -248,10 +245,10 @@ if has("cscope")
    nnoremap <leader>kc :cscope kill 0<CR>
 
    " Shortcut to do cscope file searches
-   nnoremap gf <C-\>f
+   nmap gf <C-\>f
 
    " Shortcut to do a cscope search
-   nnoremap <F4> <C-\>s
+   nmap <F4> <C-\>s
    nnoremap <C-F4> :cs find s<space>
    nnoremap <S-F4> :cs find f<space>
 endif "}}}
@@ -324,8 +321,8 @@ function! ToggleFoldMethod()
 endfunction "}}}
 
 " Open folds and pulse the cursor line when searching
-nnoremap n nzv:call PulseCursorLine()<CR>
-nnoremap N Nzv:call PulseCursorLine()<CR>
+nnoremap <silent> n nzv:call PulseCursorLine()<CR>
+nnoremap <silent> N Nzv:call PulseCursorLine()<CR>
 
 function! PulseCursorLine() "{{{
     let current_window = winnr()
