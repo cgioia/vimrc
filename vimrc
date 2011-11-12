@@ -252,6 +252,9 @@ let g:syntastic_auto_jump=1
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
 
+" No shift to type Ex commands
+nnoremap ; :
+
 if has("cscope") "{{{
    command! LoadCscope call LoadCscopeDb()
    function! LoadCscopeDb()
