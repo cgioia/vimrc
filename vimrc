@@ -13,76 +13,99 @@ filetype plugin indent on
 " Get the first runtime path for storing/reading some stuff later
 let rtdirs = split( &runtimepath, ',' )
 let vfdir = rtdirs[0]
+
+" Set the map leader for future mappings
+let mapleader=","
 " }}}
 " Editing Behavior -------------------------------------------------------- {{{
+" File encoding and format
 set encoding=utf-8
 set fileformat=unix
 set fileformats=unix,dos
+
+" Tabs
 set tabstop=8
 set smarttab
 set softtabstop=3
 set shiftwidth=3
-set backspace=indent,eol,start
 set expandtab
+
+" General editing
+set backspace=indent,eol,start
 set autoindent
 set smartindent
-set incsearch
-set hlsearch
-set showmatch
-set ignorecase
-set smartcase
-set gdefault
-set completeopt=menuone,longest
 " }}}
 " Vim Behavior ------------------------------------------------------------ {{{
-let mapleader=","
-set showcmd
+" Files and directories
 set autochdir
+set autoread
+set tags=tags;
+set wildignore=*.swp,.git,.svn,.DS_Store,*.jpg,*.bmp,*.png,*.gif
+
+" Visual indications
+set showcmd
 set showmode
+set list
+set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
+set showbreak=↪
+set cursorline
+set scrolloff=3
+set completeopt=menuone,longest
+
+" Statusline {{{
+set laststatus=2
+" Statusline highlight groups {{{
+hi default link User1 Identifier
+hi default link User2 Statement
+hi default link User3 Error
+hi default link User4 Special
+" }}}
+set statusline=[%2n]%<                " buffer number (do not truncate)
+
+set statusline+=%1*[%t]%*             " file name
+set statusline+=%2*%h%w%m%r%*         " flags
+
+set statusline+=%y                    " filetype
+set statusline+=[%{&ff}/%{strlen(&fenc)?&fenc:&enc}] " file encoding
+
+set statusline+=%=                    " right-align
+
+set statusline+=%-14(\ L%l/%L:C%c\ %) " current line and column
+set statusline+=%P                    " scroll percentage
+
+" set statusline+=\ %3*${SyntasticStatuslineFlag()}%* " Syntastic
+" }}}
+
+" Backup files
 set noswapfile
 let &directory=vfdir . "/.tmp"
 set nobackup
 let &backupdir=vfdir . "/.tmp"
 set undofile
 let &undodir=vfdir . "/.tmp/undo"
+
+" Buffers
 set hidden
-set laststatus=2
 set switchbuf=useopen,usetab
 set history=1000
 set undolevels=1000
-" Statusline {{{
-" set statusline=%F%m%r%h%w%=(%{&ff}/%Y)\ (line\ %l\/%L,\ col\ %c)
-hi default link User1 Identifier
-hi default link User2 Statement
-hi default link User3 Error
-hi default link User4 Special
-set statusline=[%2n]%<               " buffer number (do not truncate)
-set statusline+=%1*[%t]%*             " file name
-set statusline+=%2*%h%w%m%r%*         " flags
-set statusline+=%y                    " filetype
-set statusline+=[%{&ff}/%{strlen(&fenc)?&fenc:&enc}] " file encoding
-set statusline+=%=                    " right-align
-set statusline+=%-14(\ L%l/%L:C%c\ %) " current line and column
-set statusline+=%P                    " scroll percentage
-" set statusline+=\ %3*${SyntasticStatuslineFlag()}%* " Syntastic
-"}}}
-set tags=tags;
-set list
-set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
-set showbreak=↪
-set cursorline
-set scrolloff=3
-set autoread
-set wildignore=*.swp,.git,.svn,.DS_Store,*.jpg,*.bmp,*.png,*.gif
+
+" Searching
+set incsearch
+set hlsearch
+set showmatch
+set ignorecase
+set smartcase
+set gdefault
 " }}}
 " gVim Settings ----------------------------------------------------------- {{{
-if has("gui_running")
-   if has("gui_win32")
+if has( "gui_running" )
+   if has( "gui_win32" )
       " Consolas is a pretty sweet monospace font (from Microsoft, no less!)
       set guifont=Consolas:h9
       " Somewhat centered on my screen
       winpos 200 100
-   elseif has("gui_mac")
+   elseif has( "gui_mac" )
       " Fonts seem much smaller with MacVim, so go big here
       set guifont=Inconsolata:h14
    endif
@@ -94,10 +117,9 @@ if has("gui_running")
    set lines=52
    set columns=124
 
-   " Those extra 5 columns are for 5 digits of line numbers
-   " Except it's 4 now, for relative number
-   set nonumber
+   " Those extra 4 columns are for the relative numbers
    set numberwidth=4
+   set nonumber
    set relativenumber
 endif
 " }}}
@@ -105,17 +127,17 @@ endif
 " Syntax highlighting for fun and profit
 syntax on
 
-" I like pretty colors! But I'm too lazy to define my own.
 " Torte is super high-contrast, but has some annoying choices
-"colorscheme torte
-"highlight Pmenu guibg=brown gui=bold
+" colorscheme torte
+" highlight Pmenu guibg=brown gui=bold
 
-"colorscheme molokai
+" Molokai is a port of the popular TextMate color scheme
+" colorscheme molokai
 
 " Zenburn & associated configuration
-"let g:zenburn_high_Contrast = 1
-"let g:zenburn_alternate_Visual = 1
-"colorscheme zenburn
+" let g:zenburn_high_Contrast = 1
+" let g:zenburn_alternate_Visual = 1
+" colorscheme zenburn
 
 " Solarized has both light and dark configurations
 " if has("gui_running")
@@ -144,9 +166,10 @@ au BufRead,BufNewFile * let b:incomment = 0
 
 " This automatic toggle between manual and expr often caused folds to get
 " reset after leaving insert mode, which caused many fits of rage
-"au InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
-"au InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
+" au InsertEnter * if !exists('w:last_fdm') | let w:last_fdm=&foldmethod | setlocal foldmethod=manual | endif
+" au InsertLeave,WinLeave * if exists('w:last_fdm') | let &l:foldmethod=w:last_fdm | unlet w:last_fdm | endif
 
+" Functions to handle foldlevels
 function! StartFold()
    let b:foldlevel = b:foldlevel + 1
    return ">".b:foldlevel
@@ -159,12 +182,12 @@ endfunction
 function! ContinueFold()
    return b:foldlevel
 endfunction
-"}}}
+" }}}
 
 function! MyFoldText() "{{{
    let line = getline(v:foldstart)
 
-   "let nucolwidth = &fdc + &number * &numberwidth
+   " let nucolwidth = &fdc + &number * &numberwidth
    let nucolwidth = &fdc + &relativenumber * &numberwidth
    let windowwidth = winwidth(0) - nucolwidth
    let foldedlinecount = v:foldend - v:foldstart
@@ -189,48 +212,47 @@ let NERDTreeMouseMode = 2
 let NERDTreeWinSize = 38
 
 nnoremap <F7> :NERDTreeToggle<CR>
-"}}}
+" }}}
 " Tagbar {{{
 let g:tagbar_left = 1
 let g:tagbar_width = 38
 
 nnoremap <F8> :TagbarOpenAutoClose<CR>
 nnoremap <S-F8> :TagbarToggle<CR>
-"}}}
+" }}}
 " Supertab {{{
 " <C-X><C-O> is awkward and uncomfortable! I'd rather use tab.
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
-"}}}
+" }}}
 " Ack {{{
 " Do an <strike>grep</strike> Ack search
 nnoremap <leader>a :Ack<space>
-"}}}
+" }}}
 " YankRing {{{
 " Toggle the yankring window
 nnoremap <F2> :YRShow<CR>
 let g:yankring_history_dir=vfdir . "/.tmp"
-"}}}
+" }}}
 " Gundo {{{
 nnoremap <S-F5> :GundoToggle<CR>
-"}}}
+" }}}
 " Command-T {{{
 nmap <leader>ct :CommandT<CR>
 nnoremap <leader>cb :CommandTBuffer<CR>
-"}}}
+" }}}
 " Syntastic {{{
 let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
 let g:syntastic_enable_signs=1
 let g:syntastic_enable_balloons=1
 let g:syntastic_auto_jump=1
-"}}}
-"}}}
+" }}}
+" }}}
 " Shortcut Mappings ------------------------------------------------------- {{{
 " For ease of updating this file
 nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
 
-" Cscope stuffs {{{
-if has("cscope")
+if has("cscope") "{{{
    command! LoadCscope call LoadCscopeDb()
    function! LoadCscopeDb()
       " Search up recursively for the cscope database files
@@ -364,7 +386,7 @@ function! PulseCursorLine() "{{{
     execute current_window . 'wincmd w'
 endfunction "}}}
 " }}}
-" FileType-specific handling ---------------------------------------------- {{{
+" FileType-specific Handling ---------------------------------------------- {{{
 if has ("autocmd")
    augroup cpp_files "{{{
       au!
