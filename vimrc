@@ -13,6 +13,7 @@ filetype plugin indent on
 " Get the first runtime path for storing/reading some stuff later
 let rtdirs = split( &runtimepath, ',' )
 let vfdir = rtdirs[0]
+let tmpdir = vfdir . "/.tmp"
 
 " Set the map leader for future mappings
 let mapleader=","
@@ -78,11 +79,11 @@ set statusline+=%P                    " scroll percentage
 
 " Backup files
 set noswapfile
-let &directory=vfdir . "/.tmp"
+let &directory=tmpdir
 set nobackup
-let &backupdir=vfdir . "/.tmp"
+let &backupdir=tmpdir
 set undofile
-let &undodir=vfdir . "/.tmp/undo"
+let &undodir=tmpdir . "/undo"
 
 " Buffers
 set hidden
@@ -205,7 +206,7 @@ set foldtext=MyFoldText()
 " Plugin Settings --------------------------------------------------------- {{{
 " NERDTree {{{
 let NERDTreeShowBookmarks = 1
-let NERDTreeBookmarksFile=vfdir . "/.tmp/NERDTreeBookmarks"
+let NERDTreeBookmarksFile=tmpdir . "/NERDTreeBookmarks"
 let NERDTreeQuitOnOpen = 1
 let NERDTreeHighlightCursorline = 1
 let NERDTreeMouseMode = 2
@@ -231,7 +232,7 @@ nnoremap <leader>a :Ack<space>
 " YankRing {{{
 " Toggle the yankring window
 nnoremap <F2> :YRShow<CR>
-let g:yankring_history_dir=vfdir . "/.tmp"
+let g:yankring_history_dir=tmpdir
 " }}}
 " Gundo {{{
 nnoremap <S-F5> :GundoToggle<CR>
