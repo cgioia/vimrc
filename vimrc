@@ -48,31 +48,32 @@ set showcmd
 set showmode
 set list
 set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
-set showbreak=↪
+" set showbreak=↪
+set showbreak=…
+set laststatus=2
 set cursorline
 set scrolloff=3
 set completeopt=menuone,longest
 
 " Statusline {{{
-set laststatus=2
 " Statusline highlight groups {{{
-hi default link User1 Identifier
-hi default link User2 Statement
-hi default link User3 Error
-hi default link User4 Special
+" hi default link User1 Identifier
+" hi default link User2 Statement
+" hi default link User3 Error
+" hi default link User4 Special
 " }}}
-set statusline=[%2n]%<                " buffer number (do not truncate)
+" set statusline=[%2n]%<                " buffer number (do not truncate)
 
-set statusline+=%1*[%t]%*             " file name
-set statusline+=%2*%h%w%m%r%*         " flags
+" set statusline+=%1*[%t]%*             " file name
+" set statusline+=%2*%h%w%m%r%*         " flags
 
-set statusline+=%y                    " filetype
-set statusline+=[%{&ff}/%{strlen(&fenc)?&fenc:&enc}] " file encoding
+" set statusline+=%y                    " filetype
+" set statusline+=[%{&ff}/%{strlen(&fenc)?&fenc:&enc}] " file encoding
 
-set statusline+=%=                    " right-align
+" set statusline+=%=                    " right-align
 
-set statusline+=%-14(\ L%l/%L:C%c\ %) " current line and column
-set statusline+=%P                    " scroll percentage
+" set statusline+=%-14(\ L%l/%L:C%c\ %) " current line and column
+" set statusline+=%P                    " scroll percentage
 
 " set statusline+=\ %3*${SyntasticStatuslineFlag()}%* " Syntastic
 " }}}
@@ -246,6 +247,14 @@ let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
 let g:syntastic_enable_signs=1
 let g:syntastic_enable_balloons=1
 let g:syntastic_auto_jump=1
+" }}}
+" Powerline {{{
+let g:Powerline_symbols = "compatible"
+let g:Powerline_symbols_override = {
+   \ 'BRANCH': '±',
+   \ 'LINE': '№',
+   \ 'RO': '◊' }
+let g:Powerline_dividers_override = ['', '›', '', '‹']
 " }}}
 " }}}
 " Shortcut Mappings ------------------------------------------------------- {{{
