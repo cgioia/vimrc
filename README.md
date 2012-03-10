@@ -17,8 +17,6 @@ Additionally, the [Command-T][ct] script requires a compile step in order to use
 	cd vim/bundle/Command-T
 	rake make
 
-The submodules (scripts) can be updated to their latest versions with the `bundleup.sh` shell script.
-
 I have—shall we say—_borrowed_ quite liberally from both [Vincent Driessen][nvie] and [Steve Losh][sjl] to get everything where it is. So, credit where credit is due.
 
 [nvie]: https://github.com/nvie/vimrc
