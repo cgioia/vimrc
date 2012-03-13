@@ -50,12 +50,11 @@ set list
 set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
 " set showbreak=↪
 set showbreak=…
-set laststatus=2
-set cursorline
 set scrolloff=3
 set completeopt=menuone,longest
 
 " Statusline {{{
+set laststatus=2
 " Statusline highlight groups {{{
 " hi default link User1 Identifier
 " hi default link User2 Statement
@@ -76,6 +75,16 @@ set completeopt=menuone,longest
 " set statusline+=%P                    " scroll percentage
 
 " set statusline+=\ %3*${SyntasticStatuslineFlag()}%* " Syntastic
+" }}}
+
+" Cursorline {{{
+augroup cline
+    au!
+    au WinLeave,BufLeave * set nocursorline
+    au WinEnter,BufEnter * set cursorline
+    au InsertEnter * set nocursorline
+    au InsertLeave * set cursorline
+augroup END
 " }}}
 
 " Backup files
@@ -99,6 +108,9 @@ set showmatch
 set ignorecase
 set smartcase
 set gdefault
+
+" Re-size splits
+au VimResized * :wincmd =
 " }}}
 " gVim Settings ----------------------------------------------------------- {{{
 if has( "gui_running" )
@@ -213,7 +225,8 @@ let NERDTreeHighlightCursorline = 1
 let NERDTreeMouseMode = 2
 let NERDTreeWinSize = 38
 
-nnoremap <F7> :NERDTreeToggle<CR>
+nmap <F7> :NERDTree<CR>
+nmap <S-F7> :NERDTreeToggle<CR>
 " }}}
 " Tagbar {{{
 let g:tagbar_left = 1
