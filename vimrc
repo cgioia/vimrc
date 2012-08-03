@@ -263,11 +263,17 @@ let g:syntastic_auto_jump=1
 " }}}
 " Powerline {{{
 let g:Powerline_symbols = "compatible"
-let g:Powerline_symbols_override = {
-   \ 'BRANCH': '±',
-   \ 'LINE': '№',
-   \ 'RO': '◊' }
+let g:Powerline_symbols_override = { 'BRANCH': '±', 'LINE': '№', 'RO': '◊' }
 let g:Powerline_dividers_override = ['', '›', '', '‹']
+let g:Powerline_stl_path_style = "filename"
+" }}}
+" Fugitive {{{
+nnoremap <F9> :Gstatus<CR>
+nnoremap <F10> :Gdiff<CR>
+" }}}
+" Linediff {{{
+nnoremap <F12> :Linediff<CR>
+nnoremap <S-F12> :LinediffReset<CR>
 " }}}
 " }}}
 " Shortcut Mappings ------------------------------------------------------- {{{
@@ -476,6 +482,12 @@ if has ("autocmd")
    augroup perl_files "{{{
       au!
       au FileType perl setlocal foldmethod=syntax
+   augroup end "}}}
+   augroup python "{{{
+      au!
+      au FileType python setlocal noexpandtab
+      au FileType python setlocal nosmarttab
+      au FileType python setlocal tabstop=3
    augroup end "}}}
 endif
 " }}}
