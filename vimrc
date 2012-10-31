@@ -35,10 +35,10 @@ set expandtab
 set backspace=indent,eol,start
 set autoindent
 set smartindent
+set pastetoggle=<F11>
 " }}}
 " Vim Behavior ------------------------------------------------------------ {{{
 " Files and directories
-set autochdir
 set autoread
 set tags=tags;
 set wildignore=*.swp,.git,.svn,.DS_Store,*.jpg,*.bmp,*.png,*.gif
@@ -52,6 +52,12 @@ set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
 set showbreak=…
 set scrolloff=3
 set completeopt=menuone,longest
+set title
+set mouse=a
+
+set numberwidth=4
+set nonumber
+set relativenumber
 
 " Statusline {{{
 set laststatus=2
@@ -130,11 +136,6 @@ if has( "gui_running" )
    " GUI is 50x120
    set lines=52
    set columns=124
-
-   " Those extra 4 columns are for the relative numbers
-   set numberwidth=4
-   set nonumber
-   set relativenumber
 endif
 " }}}
 " Highlighting ------------------------------------------------------------ {{{
@@ -159,9 +160,8 @@ syntax on
 " else
 "    set background=dark
 " endif
-" let g:solarized_termcolors=256
-" let g:solarized_visibility="low"
 colorscheme solarized
+set background=dark
 call togglebg#map("<F1>")
 
 " Use a very noticible highlight when going over length for the FileType
@@ -223,7 +223,7 @@ let NERDTreeBookmarksFile=tmpdir . "/NERDTreeBookmarks"
 let NERDTreeQuitOnOpen = 1
 let NERDTreeHighlightCursorline = 1
 let NERDTreeMouseMode = 2
-let NERDTreeWinSize = 38
+let NERDTreeDirArrows = 0
 
 nmap <F7> :NERDTree<CR>
 nmap <S-F7> :NERDTreeToggle<CR>
@@ -231,6 +231,7 @@ nmap <S-F7> :NERDTreeToggle<CR>
 " Tagbar {{{
 let g:tagbar_left = 1
 let g:tagbar_width = 38
+let g:tagbar_iconchars = ['+', '-']
 
 nnoremap <F8> :TagbarOpenAutoClose<CR>
 nnoremap <S-F8> :TagbarToggle<CR>
@@ -254,6 +255,7 @@ nnoremap <S-F5> :GundoToggle<CR>
 " Command-T {{{
 nmap <leader>ct :CommandT<CR>
 nnoremap <leader>cb :CommandTBuffer<CR>
+let g:CommandTMaxFiles=30000
 " }}}
 " Syntastic {{{
 let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
@@ -266,6 +268,12 @@ let g:Powerline_symbols = "compatible"
 let g:Powerline_symbols_override = { 'BRANCH': '±', 'LINE': '№', 'RO': '◊' }
 let g:Powerline_dividers_override = ['', '›', '', '‹']
 let g:Powerline_stl_path_style = "filename"
+
+" The default "middle dot" is not displayed properly in some environments
+let g:Powerline_mode_V = "V·LINE"
+let g:Powerline_mode_cv = "V·BLOCK"
+let g:Powerline_mode_S = "S·LINE"
+let g:Powerline_mode_cs = "S·BLOCK"
 " }}}
 " Fugitive {{{
 nnoremap <F9> :Gstatus<CR>
@@ -375,8 +383,10 @@ function! ToggleFoldMethod()
 endfunction "}}}
 
 " Open folds and pulse the cursor line when searching
-nnoremap <silent> n nzv:call PulseCursorLine()<CR>
-nnoremap <silent> N Nzv:call PulseCursorLine()<CR>
+" nnoremap <silent> n nzv:call PulseCursorLine()<CR>
+" nnoremap <silent> N Nzv:call PulseCursorLine()<CR>
+nnoremap <silent> n nzv
+nnoremap <silent> N Nzv
 
 function! PulseCursorLine() "{{{
     let current_window = winnr()
