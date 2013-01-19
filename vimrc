@@ -29,17 +29,20 @@ set tabstop=8
 set smarttab
 set softtabstop=3
 set shiftwidth=3
+set shiftround
 set expandtab
 
 " General editing
 set backspace=indent,eol,start
 set autoindent
 set smartindent
-set pastetoggle=<F11>
+" set pastetoggle=<F12>
+nnoremap <F12> :set paste!<CR>
 " }}}
 " Vim Behavior ------------------------------------------------------------ {{{
 " Files and directories
 set autoread
+set autowrite
 set tags=tags;
 set wildignore=*.swp,.git,.svn,.DS_Store,*.jpg,*.bmp,*.png,*.gif
 
@@ -49,7 +52,8 @@ set showmode
 set list
 set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
 " set showbreak=↪
-set showbreak=…
+" set showbreak=…
+set showbreak=→
 set scrolloff=3
 set completeopt=menuone,longest
 set title
@@ -84,13 +88,17 @@ set laststatus=2
 " }}}
 
 " Cursorline {{{
-augroup cline
-    au!
-    au WinLeave,BufLeave * set nocursorline
-    au WinEnter,BufEnter * set cursorline
-    au InsertEnter * set nocursorline
-    au InsertLeave * set cursorline
-augroup END
+if has ("autocmd")
+   augroup cline
+      au!
+      au WinLeave,BufLeave * set nocursorline
+      au WinEnter,BufEnter * set cursorline
+      au InsertEnter * set nocursorline
+      au InsertLeave * set cursorline
+   augroup END
+else
+   set cursorline
+endif
 " }}}
 
 " Backup files
@@ -115,8 +123,17 @@ set ignorecase
 set smartcase
 set gdefault
 
-" Re-size splits
-au VimResized * :wincmd =
+" Splits
+set splitbelow
+set splitright
+if has ("autocmd")
+   au VimResized * :wincmd =
+endif
+
+" Quickfix
+if has("cscope")
+   set cscopequickfix=s0,g0,d0,c0,t-,e-,f0,i-
+endif
 " }}}
 " gVim Settings ----------------------------------------------------------- {{{
 if has( "gui_running" )
@@ -160,9 +177,9 @@ syntax on
 " else
 "    set background=dark
 " endif
-colorscheme solarized
 set background=dark
-call togglebg#map("<F1>")
+colorscheme solarized
+call togglebg#map("<leader>bg")
 
 " Use a very noticible highlight when going over length for the FileType
 highlight link OverLength WarningMsg
@@ -225,16 +242,16 @@ let NERDTreeHighlightCursorline = 1
 let NERDTreeMouseMode = 2
 let NERDTreeDirArrows = 0
 
-nmap <F7> :NERDTree<CR>
-nmap <S-F7> :NERDTreeToggle<CR>
+nnoremap <leader>nt :NERDTreeToggle<CR>
+nnoremap <F7> :NERDTreeFind<CR>
 " }}}
 " Tagbar {{{
 let g:tagbar_left = 1
 let g:tagbar_width = 38
 let g:tagbar_iconchars = ['+', '-']
 
+nnoremap <leader>tb :TagbarToggle<CR>
 nnoremap <F8> :TagbarOpenAutoClose<CR>
-nnoremap <S-F8> :TagbarToggle<CR>
 " }}}
 " Supertab {{{
 " <C-X><C-O> is awkward and uncomfortable! I'd rather use tab.
@@ -242,7 +259,7 @@ let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 " }}}
 " Ack {{{
 " Do an <strike>grep</strike> Ack search
-nnoremap <leader>a :Ack<space>
+nmap <leader>a :Ack<space>
 " }}}
 " YankRing {{{
 " Toggle the yankring window
@@ -250,7 +267,7 @@ nnoremap <F2> :YRShow<CR>
 let g:yankring_history_dir=tmpdir
 " }}}
 " Gundo {{{
-nnoremap <S-F5> :GundoToggle<CR>
+nnoremap <F1> :GundoToggle<CR>
 " }}}
 " Command-T {{{
 nmap <leader>ct :CommandT<CR>
@@ -259,8 +276,6 @@ let g:CommandTMaxFiles=30000
 " }}}
 " Syntastic {{{
 let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
-let g:syntastic_enable_signs=1
-let g:syntastic_enable_balloons=1
 let g:syntastic_auto_jump=1
 " }}}
 " Powerline {{{
@@ -276,12 +291,12 @@ let g:Powerline_mode_S = "S·LINE"
 let g:Powerline_mode_cs = "S·BLOCK"
 " }}}
 " Fugitive {{{
-nnoremap <F9> :Gstatus<CR>
-nnoremap <F10> :Gdiff<CR>
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gd :Gdiff<CR>
 " }}}
 " Linediff {{{
-nnoremap <F12> :Linediff<CR>
-nnoremap <S-F12> :LinediffReset<CR>
+nnoremap <leader>ld :Linediff<CR>
+nnoremap <leader>lr :LinediffReset<CR>
 " }}}
 " }}}
 " Shortcut Mappings ------------------------------------------------------- {{{
@@ -293,26 +308,25 @@ nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
 nnoremap ; :
 
 if has("cscope") "{{{
-   command! LoadCscope call LoadCscopeDb()
-   function! LoadCscopeDb()
-      " Search up recursively for the cscope database files
-      let cscope_db=findfile("cscope.out", ".;")
-      if filereadable(cscope_db)
-         silent! execute "cscope add" cscope_db
-      endif
-   endfunction
+   " command! LoadCscope call LoadCscopeDb()
+   " function! LoadCscopeDb()
+   "    " Search up recursively for the cscope database files
+   "    let cscope_db=findfile("cscope.out", ".;")
+   "    if filereadable(cscope_db)
+   "       silent! execute "cscope add" cscope_db
+   "    endif
+   " endfunction
 
    " Load/Kill the cscope database
-   nnoremap <leader>lc :LoadCscope<CR>
-   nnoremap <leader>kc :cscope kill 0<CR>
+   " nnoremap <leader>lc :LoadCscope<CR>
+   nnoremap <leader>lc :cscope add cscope.out<CR>
+   nnoremap <leader>kc :cscope kill -1<CR>
 
    " Shortcut to do cscope file searches
    nmap gf <C-\>f
 
    " Shortcut to do a cscope search
    nmap <F4> <C-\>s
-   nnoremap <C-F4> :cs find s<space>
-   nnoremap <S-F4> :cs find f<space>
 endif "}}}
 
 " Make regexs more Perl-like
@@ -340,8 +354,6 @@ vnoremap <Tab> %
 " Space to toggle folds
 nnoremap <Space> za
 vnoremap <Space> za
-nnoremap <S-Space> zA
-vnoremap <S-Space> zA
 
 " No, seriously, write it. I mean it.
 cnoremap w!! w !sudo tee % >/dev/null
@@ -427,6 +439,13 @@ function! PulseCursorLine() "{{{
     windo set cursorline
     execute current_window . 'wincmd w'
 endfunction "}}}
+
+" Swap the mark/mark-bol keys
+nnoremap ' `
+nnoremap ` '
+
+" Toggle list characters
+nnoremap <leader>i :set list!<CR>
 " }}}
 " FileType-specific Handling ---------------------------------------------- {{{
 if has ("autocmd")
