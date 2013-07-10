@@ -55,11 +55,13 @@ set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
 " set showbreak=…
 set showbreak=→
 set scrolloff=3
+set sidescroll=1
+set sidescrolloff=10
 set completeopt=menuone,longest
 set title
 set mouse=a
 
-set numberwidth=4
+set numberwidth=5
 set nonumber
 set relativenumber
 
@@ -152,7 +154,7 @@ if has( "gui_running" )
 
    " GUI is 50x120
    set lines=52
-   set columns=124
+   set columns=125
 endif
 " }}}
 " Highlighting ------------------------------------------------------------ {{{
@@ -259,7 +261,8 @@ let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
 " }}}
 " Ack {{{
 " Do an <strike>grep</strike> Ack search
-nmap <leader>a :Ack<space>
+nmap <leader>a :Ack --smart-case ""<LEFT>
+nmap <leader>s :Ack --literal <cword><CR>
 " }}}
 " YankRing {{{
 " Toggle the yankring window
@@ -277,6 +280,7 @@ let g:CommandTMaxFiles=30000
 " Syntastic {{{
 let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
 let g:syntastic_auto_jump=1
+let g:syntastic_auto_loc_list=2
 " }}}
 " Powerline {{{
 let g:Powerline_symbols = "compatible"
@@ -394,51 +398,9 @@ function! ToggleFoldMethod()
    endif
 endfunction "}}}
 
-" Open folds and pulse the cursor line when searching
-" nnoremap <silent> n nzv:call PulseCursorLine()<CR>
-" nnoremap <silent> N Nzv:call PulseCursorLine()<CR>
+" Open folds when searching
 nnoremap <silent> n nzv
 nnoremap <silent> N Nzv
-
-function! PulseCursorLine() "{{{
-    let current_window = winnr()
-
-    windo set nocursorline
-    execute current_window . 'wincmd w'
-
-    setlocal cursorline
-
-    redir => old_hi
-        silent execute 'hi CursorLine'
-    redir END
-    let old_hi = split(old_hi, '\n')[0]
-    let old_hi = substitute(old_hi, 'xxx', '', '')
-
-    hi CursorLine guibg=#2a2a2a
-    redraw
-    sleep 5m
-
-    hi CursorLine guibg=#3a3a3a
-    redraw
-    sleep 5m
-
-    hi CursorLine guibg=#4a4a4a
-    redraw
-    sleep 5m
-
-    hi CursorLine guibg=#3a3a3a
-    redraw
-    sleep 5m
-
-    hi CursorLine guibg=#2a2a2a
-    redraw
-    sleep 5m
-
-    execute 'hi ' . old_hi
-
-    windo set cursorline
-    execute current_window . 'wincmd w'
-endfunction "}}}
 
 " Swap the mark/mark-bol keys
 nnoremap ' `
@@ -446,6 +408,10 @@ nnoremap ` '
 
 " Toggle list characters
 nnoremap <leader>i :set list!<CR>
+
+" Movement whilst insert
+inoremap <C-a> <ESC>I
+inoremap <C-e> <ESC>A
 " }}}
 " FileType-specific Handling ---------------------------------------------- {{{
 if has ("autocmd")
