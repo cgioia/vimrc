@@ -20,7 +20,7 @@ Once cloning is complete, create some symbolic links to get vim pointed at the r
 	ln -s vimrc/vimrc .vimrc
 	ln -s vimrc/vim/ .vim
 
-I have—shall we say—*borrowed* quite liberally from both [Vincent Driessen][nvie] and [Steve Losh][sjl] to get everything where it is. So, credit where credit is due.
+I have—shall we say—borrowed quite liberally from both [Vincent Driessen][nvie] and [Steve Losh][sjl] to get everything where it is. So, credit where credit is due.
 
 [nvie]: https://github.com/nvie/vimrc
 [sjl]: https://bitbucket.org/sjl/dotfiles/
