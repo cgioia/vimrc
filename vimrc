@@ -286,7 +286,7 @@ let g:syntastic_auto_loc_list=2
 let g:Powerline_symbols = "compatible"
 let g:Powerline_symbols_override = { 'BRANCH': '±', 'LINE': '№', 'RO': '◊' }
 let g:Powerline_dividers_override = ['', '›', '', '‹']
-let g:Powerline_stl_path_style = "filename"
+let g:Powerline_stl_path_style = "short"
 
 " The default "middle dot" is not displayed properly in some environments
 let g:Powerline_mode_V = "V·LINE"
