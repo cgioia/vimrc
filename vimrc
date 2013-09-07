@@ -43,7 +43,7 @@ nnoremap <F12> :set paste!<CR>
 " Files and directories
 set autoread
 set autowrite
-set tags=tags;
+" set tags=tags;
 set wildignore=*.swp,.git,.svn,.DS_Store,*.jpg,*.bmp,*.png,*.gif
 
 " Visual indications
