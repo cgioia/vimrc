@@ -58,7 +58,11 @@ set scrolloff=3
 set sidescroll=1
 set sidescrolloff=10
 set completeopt=menuone,longest
-set title
+" set title
+if &term =~ '^screen'
+   set t_ts=k
+   set t_fs=\
+endif
 set mouse=a
 
 set numberwidth=5
