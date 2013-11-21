@@ -44,7 +44,7 @@ nnoremap <F12> :set paste!<CR>
 set autoread
 set autowrite
 " set tags=tags;
-set wildignore=*.swp,.git,.svn,.DS_Store,*.jpg,*.bmp,*.png,*.gif
+set wildignore=*.swp,.git,.svn,.DS_Store,*.jpg,*.bmp,*.png,*.gif,*.tar*
 
 " Visual indications
 set showcmd
