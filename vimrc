@@ -321,6 +321,8 @@ nnoremap <leader>gd :Gdiff<CR>
 " Linediff {{{
 nnoremap <leader>ld :Linediff<CR>
 nnoremap <leader>lr :LinediffReset<CR>
+vnoremap <leader>ld :Linediff<CR>
+vnoremap <leader>lr :LinediffReset<CR>
 " }}}
 " }}}
 " Shortcut Mappings ------------------------------------------------------- {{{
