@@ -471,9 +471,9 @@ if has ("autocmd")
             " Fold the current line if it doesn't have an open brace and the
             " next line starts with one
             return StartFold()
-         elseif l1 =~ '{[^}]*$' && getline(a:lnum-1) =~ '\%([{,;]\s*$\)\|\%(^\s*\%([#/\*].\+\)\?$\)'
+         elseif l1 =~ '{[^}]*$' && getline(a:lnum-1) =~ '\%([{},;]\s*$\)\|\%(^\s*\%([#/\*].\+\)\?$\)'
             " Fold current line if it has an open brace and the previous line
-            " ends with a comma, open brace, semicolon, or is otherwise ignored
+            " ends with a comma, open brace, closed brace, semicolon, or is otherwise ignored
             return StartFold()
          endif
 
