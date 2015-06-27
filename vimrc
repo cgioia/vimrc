@@ -65,7 +65,7 @@ if &term =~ '^screen'
 endif
 set mouse=a
 
-set numberwidth=5
+set numberwidth=4
 set nonumber
 set relativenumber
 
@@ -174,7 +174,7 @@ if has( "gui_running" )
 
    " GUI is 50x120
    set lines=52
-   set columns=125
+   set columns=124
 endif
 " }}}
 " Highlighting ------------------------------------------------------------ {{{
