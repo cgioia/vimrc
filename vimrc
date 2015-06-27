@@ -295,7 +295,7 @@ nnoremap <F1> :GundoToggle<CR>
 " Command-T {{{
 nmap <leader>ct :CommandT<CR>
 nnoremap <leader>cb :CommandTBuffer<CR>
-let g:CommandTMaxFiles=40000
+let g:CommandTMaxFiles=60000
 " }}}
 " Syntastic {{{
 let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
