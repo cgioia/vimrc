@@ -306,21 +306,6 @@ let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
 let g:syntastic_auto_jump=1
 let g:syntastic_auto_loc_list=2
 " }}}
-" Powerline {{{
-" let g:Powerline_symbols = "fancy"
-let g:Powerline_symbols = "unicode"
-let g:Powerline_symbols_override = { 'BRANCH': '±', 'LINE': '§', 'RO': '⧫' }
-" let g:Powerline_symbols_override = { 'BRANCH': '±', 'LINE': '№', 'RO': '◊' }
-" let g:Powerline_dividers_override = ['▶', '❯', '◀', '❮']
-" let g:Powerline_dividers_override = ['', '›', '', '‹']
-let g:Powerline_stl_path_style = "short"
-
-" Use "middle dot" instead of dot operator if the font doesn't have the glyph
-"let g:Powerline_mode_V = "V·LINE"
-"let g:Powerline_mode_cv = "V·BLOCK"
-"let g:Powerline_mode_S = "S·LINE"
-"let g:Powerline_mode_cs = "S·BLOCK"
-" }}}
 " Airline {{{
 let g:airline_theme = "solarized"
 
