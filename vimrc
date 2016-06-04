@@ -50,10 +50,13 @@ set wildignore=*.swp,.git,.svn,.DS_Store,*.jpg,*.bmp,*.png,*.gif,*.tar*
 set showcmd
 set showmode
 set list
-set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
-" set showbreak=↪
+" Based on glyphs available in Consolas
+" set listchars=tab:»\ ,eol:¬,extends:›,precedes:‹,trail:·
+" Based on glyphs available in Hack
+set listchars=tab:»\ ,eol:↵,extends:›,precedes:‹,trail:⋅
+set showbreak=↪
 " set showbreak=…
-set showbreak=→
+" set showbreak=→
 set scrolloff=3
 set sidescroll=1
 set sidescrolloff=10
@@ -64,6 +67,7 @@ if &term =~ '^screen'
    set t_fs=\
 endif
 set mouse=a
+set ttymouse=sgr
 
 set numberwidth=4
 set nonumber
@@ -164,9 +168,9 @@ if has( "gui_running" )
       set guifont=Consolas:h9
       " Somewhat centered on my screen
       winpos 200 100
-   elseif has( "gui_mac" )
+   elseif has( "gui_macvim" )
       " Fonts seem much smaller with MacVim, so go big here
-      set guifont=Inconsolata:h14
+      set guifont=Hack\ Regular:h12
    endif
 
    " Remove the toolbar, it's just wasting space
