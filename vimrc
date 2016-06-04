@@ -303,16 +303,40 @@ let g:syntastic_auto_jump=1
 let g:syntastic_auto_loc_list=2
 " }}}
 " Powerline {{{
-let g:Powerline_symbols = "compatible"
-let g:Powerline_symbols_override = { 'BRANCH': '±', 'LINE': '№', 'RO': '◊' }
-let g:Powerline_dividers_override = ['', '›', '', '‹']
+" let g:Powerline_symbols = "fancy"
+let g:Powerline_symbols = "unicode"
+let g:Powerline_symbols_override = { 'BRANCH': '±', 'LINE': '§', 'RO': '⧫' }
+" let g:Powerline_symbols_override = { 'BRANCH': '±', 'LINE': '№', 'RO': '◊' }
+" let g:Powerline_dividers_override = ['▶', '❯', '◀', '❮']
+" let g:Powerline_dividers_override = ['', '›', '', '‹']
 let g:Powerline_stl_path_style = "short"
 
-" The default "middle dot" is not displayed properly in some environments
-let g:Powerline_mode_V = "V·LINE"
-let g:Powerline_mode_cv = "V·BLOCK"
-let g:Powerline_mode_S = "S·LINE"
-let g:Powerline_mode_cs = "S·BLOCK"
+" Use "middle dot" instead of dot operator if the font doesn't have the glyph
+"let g:Powerline_mode_V = "V·LINE"
+"let g:Powerline_mode_cv = "V·BLOCK"
+"let g:Powerline_mode_S = "S·LINE"
+"let g:Powerline_mode_cs = "S·BLOCK"
+" }}}
+" Airline {{{
+let g:airline_theme = "solarized"
+
+let g:airline_section_y = '%{printf("%s%s%s", &fenc, strlen(&fenc) > 0 ? "  " : "", &ff)}'
+let g:airline_section_error = ''
+let g:airline_section_warning = ''
+
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+
+if !exists('g:airline_symbols')
+   let g:airline_symbols = {}
+endif
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
+
+let g:airline#extensions#tmuxline#enabled = 1
 " }}}
 " Fugitive {{{
 nnoremap <leader>gs :Gstatus<CR>
