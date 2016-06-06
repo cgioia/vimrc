@@ -165,7 +165,8 @@ endif
 if has( "gui_running" )
    if has( "gui_win32" )
       " Consolas is a pretty sweet monospace font (from Microsoft, no less!)
-      set guifont=Consolas:h9
+      " set guifont=Consolas:h9
+      set guifont=Hack\ Regular:h8
       " Somewhat centered on my screen
       winpos 200 100
    elseif has( "gui_macvim" )
