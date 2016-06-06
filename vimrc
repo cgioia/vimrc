@@ -297,11 +297,6 @@ let g:yankring_history_dir=tmpdir
 " Gundo {{{
 nnoremap <F1> :GundoToggle<CR>
 " }}}
-" Command-T {{{
-nmap <leader>ct :CommandT<CR>
-nnoremap <leader>cb :CommandTBuffer<CR>
-let g:CommandTMaxFiles=60000
-" }}}
 " Syntastic {{{
 let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
 let g:syntastic_auto_jump=1
