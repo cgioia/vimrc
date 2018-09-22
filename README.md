@@ -9,7 +9,7 @@ Once cloning is complete, create some symbolic links in your home directory to g
 
 Additionally, the [Command-T][ct] script requires a compile step in order to use it. Provided you have ruby installed:
 
-	cd ~/.vim/bundle/Command-T/ruby/command-t
+	cd ~/.vim/bundle/Command-T/ruby/command-t/ext/command-t
 	ruby extconf.rb
 	make
 
