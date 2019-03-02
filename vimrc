@@ -206,7 +206,7 @@ syntax on
 " endif
 set background=dark
 colorscheme solarized
-call togglebg#map("<leader>bg")
+call togglebg#map("<leader>sbg")
 
 " Use a very noticible highlight when going over length for the FileType
 highlight link OverLength WarningMsg
