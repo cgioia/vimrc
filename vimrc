@@ -277,7 +277,7 @@ let g:tagbar_left = 1
 let g:tagbar_width = 38
 let g:tagbar_iconchars = ['+', '-']
 
-nnoremap <leader>tb :TagbarToggle<CR>
+nnoremap <S-F8> :TagbarToggle<CR>
 nnoremap <F8> :TagbarOpenAutoClose<CR>
 " }}}
 " Supertab {{{
