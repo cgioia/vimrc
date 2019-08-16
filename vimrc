@@ -348,10 +348,13 @@ nnoremap ; :
 if has("cscope") "{{{
    " command! LoadCscope call LoadCscopeDb()
    " function! LoadCscopeDb()
-   "    " Search up recursively for the cscope database files
+   "    " Search up recursively for the cscope database file
    "    let cscope_db=findfile("cscope.out", ".;")
    "    if filereadable(cscope_db)
    "       silent! execute "cscope add" cscope_db
+   "       " strip the file name out of the path, then cd to it
+   "       let cscdb_path=join(split(cscope_db, '[\\/]')[0:-2], '/')
+   "       silent! execute "cd" strlen(cscdb_path) > 0 ? "/" . cscdb_path : ""
    "    endif
    " endfunction
 
