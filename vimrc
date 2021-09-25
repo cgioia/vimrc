@@ -329,7 +329,7 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tmuxline#enabled = 1
 " }}}
 " Fugitive {{{
-nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gs :Git<CR>
 nnoremap <leader>gd :Gdiff<CR>
 " }}}
 " Linediff {{{
