@@ -172,6 +172,8 @@ if has( "gui_running" )
    elseif has( "gui_macvim" )
       " Fonts seem much smaller with MacVim, so go big here
       set guifont=Hack\ Regular:h12
+      set guioptions-=r
+      set guioptions+=R
    endif
 
    " Remove the toolbar, it's just wasting space
