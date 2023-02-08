@@ -263,6 +263,9 @@ endfunction "}}}
 set foldtext=MyFoldText()
 " }}}
 " Plugin Settings --------------------------------------------------------- {{{
+" Command-T {{{
+let g:CommandTPreferredImplementation='ruby'
+" }}}
 " NERDTree {{{
 let NERDTreeShowBookmarks = 1
 let NERDTreeBookmarksFile=tmpdir . "/NERDTreeBookmarks"
