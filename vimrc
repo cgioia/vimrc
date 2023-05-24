@@ -293,6 +293,8 @@ nmap <leader>s :Ack --literal <cword><CR>
 " Toggle the yankring window
 nnoremap <F2> :YRShow<CR>
 let g:yankring_history_dir=tmpdir
+let g:yankring_replace_n_pkey = ''
+let g:yankring_replace_n_nkey = ''
 " }}}
 " Gundo {{{
 nnoremap <F1> :GundoToggle<CR>

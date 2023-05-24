@@ -64,3 +64,6 @@
 [submodule "vim/bundle/occur.vim"]
 	path = vim/pack/modules/start/occur.vim
 	url = https://github.com/vim-scripts/occur.vim.git
+[submodule "vim/pack/modules/start/ctrlp.vim"]
+	path = vim/pack/modules/start/ctrlp.vim
+	url = https://github.com/ctrlpvim/ctrlp.vim.git
