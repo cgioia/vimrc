@@ -5,11 +5,6 @@
 " We live in the futuar, turn off forced Vi-compatibility
 set nocompatible
 
-" Infect Vim with pathogen
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-call pathogen#infect()
-filetype plugin indent on
-
 " Get the first runtime path for storing/reading some stuff later
 let rtdirs = split( &runtimepath, ',' )
 let vfdir = rtdirs[0]
