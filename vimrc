@@ -295,6 +295,7 @@ let g:yankring_replace_n_nkey = ''
 " }}}
 " Gundo {{{
 nnoremap <F1> :GundoToggle<CR>
+let g:gundo_prefer_python3=1
 " }}}
 " Syntastic {{{
 let g:syntastic_stl_format='[%E{Err: %fe #%e}%B{, }%W{Warn: %fw #%w}]'
