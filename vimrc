@@ -201,7 +201,7 @@ syntax on
 " else
 "    set background=dark
 " endif
-set background=light
+set background=dark
 colorscheme solarized
 call togglebg#map("<leader>sbg")
 
